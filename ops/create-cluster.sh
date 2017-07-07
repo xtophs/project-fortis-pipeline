@@ -12,6 +12,7 @@ readonly sb_conn_str="$9"
 readonly cogsvc_vision_account_key="${10}"
 readonly cogsvc_text_account_key="${11}"
 readonly cogsvc_speech_account_key="${12}"
+readonly translation_account_key="${13}"
 
 chmod -R 752 .
 
@@ -81,7 +82,8 @@ echo "Finished. Deploying environment settings to cluster."
     "${sb_conn_str}" \
     "${cogsvc_vision_account_key}" \
     "${cogsvc_text_account_key}" \
-    "${cogsvc_speech_account_key}"
+    "${cogsvc_speech_account_key}" \
+    "${translation_account_key}"
 
 echo "Finished. Installing spark cluster."
 ./install-spark.sh "${k8spark_worker_count}" "${spark_config_map_name}" "${fortis_central_directory}"

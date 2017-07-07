@@ -29,6 +29,7 @@ Arguments
   --cogsvc_vision_account_key|-cvak  [Required] : Account key for Vision Cognitive Services
   --cogsvc_text_account_key|-ctak    [Required] : Account key for Text Cognitive Services
   --cogsvc_speech_account_key|-csak  [Required] : Account key for Speech Cognitive Services
+  --translation_account_key|-trak    [Required] : Account key for Translation Services
 EOF
 }
 
@@ -139,6 +140,10 @@ do
       cogsvc_speech_account_key="$1"
       shift
       ;;
+    --translation_account_key|-trak)
+      translation_account_key="$1"
+      shift
+      ;;
     *)
       echo "ERROR: Unknown argument '${key}' to script '$0'" 1>&2
       exit -1
@@ -235,6 +240,7 @@ throw_if_empty --sb_conn_str "${sb_conn_str}"
 throw_if_empty --cogsvc_vision_account_key "${cogsvc_vision_account_key}"
 throw_if_empty --cogsvc_text_account_key "${cogsvc_text_account_key}"
 throw_if_empty --cogsvc_speech_account_key "${cogsvc_speech_account_key}"
+throw_if_empty --translation_account_key "${translation_account_key}"
 
 readonly kube_config_dest_file="/home/${user_name}/.kube/config"
 
@@ -289,4 +295,5 @@ chmod 752 create-cluster.sh
     "${sb_conn_str}" \
     "${cogsvc_vision_account_key}" \
     "${cogsvc_text_account_key}" \
-    "${cogsvc_speech_account_key}"
+    "${cogsvc_speech_account_key}" \
+    "${translation_account_key}"
