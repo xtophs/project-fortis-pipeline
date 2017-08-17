@@ -1,0 +1,57 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.1",
+    "parameters": {
+        "siteName": {
+            "value": "xtoph-fortis"
+        },
+        "vmName" : {
+            "value" : "installvm"
+        },
+        "adminUsername": {
+            "value": "fortisadmin"
+        },
+        "appInsightsKey": {
+          "value": ""  
+        },    
+        "kubernetesName": {
+            "value": ""  
+        },
+        "storageAccountName" : {
+            "value": ""
+        },
+        "siteType" : {
+            "value": "humanitarian"
+        },
+        "sparkWorkers" : {
+            "value": 5
+        },
+        "cassandraNodes" : {
+            "value": 6
+        },
+        "servicePrincipalAppId": {
+            "value": ""
+        },
+        "servicePrincipalAppKey": {
+            "value": ""
+        },
+        "dnsNamePrefix" : {
+            "value": ""
+        },
+        "eventhubResource" : {
+            "value": ""
+        },
+        "ehVersion" : { 
+            "value": ""
+        },
+        "sbAuthRuleResourceId" : {
+            "value": ""
+        },
+        "sbVersion" : {
+            "value": ""
+        },
+        "githubClonePath" :{
+            "value": ""
+        }
+    }
+}

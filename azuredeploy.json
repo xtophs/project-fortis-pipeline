@@ -102,37 +102,25 @@
         "premStorageSku": "Premium_LRS",
         "vmStorageAccountType": "Standard_LRS",
         "vmName": "FortisDeployVM",
-        "OSDiskName": "osdiskforlinuxsimple",
         "applicationInsightServiceName": "[concat('FortisAppInsight-', parameters('siteName'))]",
         "kubernetesName": "[concat('containerservice-', resourceGroup().name)]",
         "orchestratorType": "Kubernetes",
-        "sshKeyPath": "[concat('/home/',parameters('adminUsername'),'/.ssh/authorized_keys')]",
         "fortisEventHubName": "tadawebEHTopic",
         "deploymentVmSize": "Standard_D2_v2",
-        "deploymentUbuntuOSVersion": "16.04.0-LTS",
-        "imagePublisher": "Canonical",
         "deisStorageAcctName": "[concat(substring(uniquestring(resourceGroup().id), 8), 'deisstorage')]",
-        "imageOffer": "UbuntuServer",
-        "vmStorageAccountContainerName": "vhds",
-        "nicName": "fortisVMNic",
         "managePolicy": "ManagePolicy",
         "sendPolicy": "SendPolicy",
         "agentOsType": "Linux",
         "listenPolicy": "ListenPolicy",
         "ehVersion": "2015-08-01",
-        "vmStorageAccountName": "[concat(substring(uniquestring(resourceGroup().id), 8), 'ststrg')]",
         "ehConsumerGroupName": "fortisEHConsumerGroup",
         "addressPrefix": "10.0.0.0/16",
-        "publicIPAddressName": "fortisDeployPublicIP",
         "subnetName": "Subnet",
         "sbVersion": "2017-04-01",
         "subnetPrefix": "10.0.0.0/24",
-        "publicIPAddressType": "Dynamic",
         "virtualNetworkName": "FortisVNet",
         "vnetID": "[resourceId('Microsoft.Network/virtualNetworks',variables('virtualNetworkName'))]",
         "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
-        "postDeploymentGithubRepoPath": "https://raw.githubusercontent.com/CatalystCode/fortisdeploy/master",
-        "postDeploymentExtensionScript": "fortis-deploy.sh",
         "githubClonePath": "https://github.com/xtophs/project-fortis-pipeline.git",
         "sbNamespace": "[concat(substring(uniquestring(resourceGroup().id), 8), 'fortissbns')]",
         "sbQueueNameConfiguration": "configuration",
@@ -183,18 +171,6 @@
             "properties": {}
         },
         {
-            "apiVersion": "2015-06-15",
-            "type": "Microsoft.Network/publicIPAddresses",
-            "name": "[variables('publicIPAddressName')]",
-            "location": "[resourceGroup().location]",
-            "properties": {
-                "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
-                "dnsSettings": {
-                    "domainNameLabel": "[concat( substring(uniquestring(resourceGroup().id), 4), parameters('siteName'))]"
-                }
-            }
-        },
-        {
             "apiVersion": "2015-01-01",
             "name": "eventhubPrimaryKey",
             "type": "Microsoft.Resources/deployments",
@@ -227,17 +203,6 @@
                     }
                 }
             }
-        },
-        {
-            "type": "Microsoft.Storage/storageAccounts",
-            "name": "[variables('vmStorageAccountName')]",
-            "apiVersion": "2016-01-01",
-            "location": "[resourceGroup().location]",
-            "sku": {
-                "name": "[variables('vmStorageAccountType')]"
-            },
-            "kind": "Storage",
-            "properties": {}
         },
         {
             "apiVersion": "[variables('sbVersion')]",
@@ -346,94 +311,6 @@
             }
         },
         {
-            "apiVersion": "2015-06-15",
-            "type": "Microsoft.Network/networkInterfaces",
-            "name": "[variables('nicName')]",
-            "location": "[resourceGroup().location]",
-            "dependsOn": [
-                "[concat('Microsoft.Network/publicIPAddresses/', variables('publicIPAddressName'))]",
-                "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"
-            ],
-            "properties": {
-                "ipConfigurations": [
-                    {
-                        "name": "ipconfig1",
-                        "properties": {
-                            "privateIPAllocationMethod": "Dynamic",
-                            "publicIPAddress": {
-                                "id": "[resourceId('Microsoft.Network/publicIPAddresses',variables('publicIPAddressName'))]"
-                            },
-                            "subnet": {
-                                "id": "[variables('subnetRef')]"
-                            }
-                        }
-                    }
-                ]
-            }
-        },
-        {
-            "apiVersion": "2016-03-30",
-            "type": "Microsoft.Compute/virtualMachines",
-            "name": "[variables('vmName')]",
-            "location": "[resourceGroup().location]",
-            "dependsOn": [
-                "[concat('Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
-                "[concat('Microsoft.Network/networkInterfaces/', variables('nicName'))]",
-                "[concat('Microsoft.Insights/components/', variables('applicationInsightServiceName'))]",
-                "[concat('Microsoft.Storage/storageAccounts/', variables('vmStorageAccountName'))]",
-                "[concat('Microsoft.EventHub/namespaces/', variables('eventHubNamespace'))]"
-            ],
-            "properties": {
-                "hardwareProfile": {
-                    "vmSize": "[variables('deploymentVmSize')]"
-                },
-                "osProfile": {
-                    "computerName": "[variables('vmName')]",
-                    "adminUsername": "[parameters('adminUsername')]",
-                    "linuxConfiguration": {
-                        "disablePasswordAuthentication": "true",
-                        "ssh": {
-                            "publicKeys": [
-                                {
-                                    "path": "[variables('sshKeyPath')]",
-                                    "keyData": "[parameters('sshPublicKey')]"
-                                }
-                            ]
-                        }
-                    }
-                },
-                "storageProfile": {
-                    "imageReference": {
-                        "publisher": "[variables('imagePublisher')]",
-                        "offer": "[variables('imageOffer')]",
-                        "sku": "[variables('deploymentUbuntuOSVersion')]",
-                        "version": "latest"
-                    },
-                    "osDisk": {
-                        "name": "osdisk",
-                        "vhd": {
-                            "uri": "[concat('http://', variables('vmStorageAccountName'),'.blob.core.windows.net/',variables('vmStorageAccountContainerName'),'/',variables('OSDiskName'),'.vhd')]"
-                        },
-                        "caching": "ReadWrite",
-                        "createOption": "FromImage"
-                    }
-                },
-                "networkProfile": {
-                    "networkInterfaces": [
-                        {
-                            "id": "[resourceId('Microsoft.Network/networkInterfaces',variables('nicName'))]"
-                        }
-                    ]
-                },
-                "diagnosticsProfile": {
-                    "bootDiagnostics": {
-                        "enabled": "true",
-                        "storageUri": "[concat('http://', variables('vmStorageAccountName'),'.blob.core.windows.net')]"
-                    }
-                }
-            }
-        },
-        {
             "name": "[variables('applicationInsightServiceName')]",
             "type": "Microsoft.Insights/components",
             "location": "eastus",
@@ -445,6 +322,40 @@
                 "Application_Type": "other",
                 "applicationId": "[variables('applicationInsightServiceName')]"
             }
+        },
+        {
+            "apiVersion": "2015-01-01",
+            "name": "installVM",
+            "type": "Microsoft.Resources/deployments",
+            "properties": {
+                "mode": "incremental",
+                "templateLink": {
+                    "uri": "https://raw.githubusercontent.com/xtoph/project-fortis-pipeline/multi-dc-deploy/azuredeploy.installbox.json",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "siteName": {
+                        "value": "[parameters('siteName')]"
+                    },
+                    "vmName" : {
+                        "value" : "[variables('vmName')]"
+                    },
+                    "deploymentVMSize": {
+                        "value": "[variables('deploymentVmSize')]"
+                    },
+                    "adminUsername": {
+                        "value": "[parameters('adminUsername')]"
+                    },
+                    "subnetRef": {
+                        "value": "[variables('subnetref')]"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[concat('Microsoft.Insights/components/', variables('applicationInsightServiceName'))]",
+                "[concat('Microsoft.EventHub/namespaces/', variables('eventHubNamespace'))]",
+                "[concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName'))]"                
+            ]
         },
         {
             "apiVersion": "2017-01-31",
@@ -481,27 +392,74 @@
             }
         },
         {
-            "type": "Microsoft.Compute/virtualMachines/extensions",
-            "name": "[concat(variables('vmName'),'/deploysite')]",
-            "apiVersion": "2016-03-30",
-            "location": "[resourceGroup().location]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Compute/virtualMachines/', variables('vmName'))]",
-                "[resourceId('Microsoft.ContainerService/containerServices/', variables('kubernetesName'))]"
-            ],
+            "apiVersion": "2015-01-01",
+            "name": "installvm-extension",
+            "type": "Microsoft.Resources/deployments",
             "properties": {
-                "publisher": "Microsoft.Azure.Extensions",
-                "type": "CustomScript",
-                "typeHandlerVersion": "2.0",
-                "autoUpgradeMinorVersion": true,
-                "settings": {
-                    "fileUris": [
-                        "[concat(variables('postDeploymentGithubRepoPath'),'/', variables('postDeploymentExtensionScript'))]"
-                    ],
-                    "commandToExecute": "[concat('./', variables('postDeploymentExtensionScript'), ' -lo \"', resourceGroup().location, '\" -ak \"', parameters('servicePrincipalAppKey'), '\" -si \"', subscription().subscriptionId, '\" -ti \"', subscription().tenantId, '\" -sn \"', parameters('siteName'), '\" -un \"', parameters('adminUsername'), '\" -aii \"', reference(resourceId('Microsoft.Insights/components', variables('applicationInsightServiceName')), '2014-04-01').InstrumentationKey,'\" -rg \"', resourceGroup().name, '\" -mf \"', reference(resourceId('Microsoft.ContainerService/containerServices', variables('kubernetesName'))).masterProfile.fqdn, '\" -san \"', variables('storageAccountName'), '\" -sak \"', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2016-01-01').keys[0].value,'\" -sty \"', parameters('siteType'), '\" -ai \"', parameters('servicePrincipalAppId'), '\" -sw \"', parameters('sparkWorkers'), '\" -cn \"', parameters('cassandraNodes'), '\" -kn \"', variables('kubernetesName'), '\" -pf \"', parameters('dnsNamePrefix'), '\" -ec \"', listKeys(variables('eventhubResource'), variables('ehVersion')).primaryConnectionString, '\" -sb \"', listkeys(variables('sbAuthRuleResourceId'), variables('sbVersion')).primaryConnectionString, '\" -gc \"', variables('githubClonePath'), '\"')]"
+                "mode": "incremental",
+                "templateLink": {
+                    "uri": "https://raw.githubusercontent.com/xtoph/project-fortis-pipeline/multi-dc-deploy/azuredeploy.installbox-ext.json",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "siteName": {
+                        "value": "[parameters('siteName')]"
+                    },
+                    "vmName" : {
+                        "value" : "[variables('vmName')]"
+                    },
+                    "adminUsername": {
+                        "value": "[parameters('adminUsername')]"
+                    },
+                    "appInsightsKey": {
+                      "value": "[reference(resourceId('Microsoft.Insights/components', variables('applicationInsightServiceName')), '2014-04-01').InstrumentationKey]"  
+                    },    
+                    "kubernetesName": {
+                        "value": "[variables('kubernetesName')]"  
+                    },
+                    "storageAccountName" : {
+                        "value": "[variables('storageAccountName')]"
+                    },
+                    "siteType" : {
+                        "value": "[parameters('siteType')]"
+                    },
+                    "sparkWorkers" : {
+                        "value": "[parameters('sparkWorkers')]"
+                    },
+                    "cassandraNodes" : {
+                        "value": "[parameters('cassandraNodes')]"
+                    },
+                    "servicePrincipalAppId": {
+                        "value": "[parameters('servicePrincipalAppId')]"
+                    },
+                    "servicePrincipalAppKey": {
+                        "value": "[parameters('servicePrincipalAppKey')]"
+                    },
+                    "dnsNamePrefix" : {
+                        "value": "[parameters('dnsNamePrefix')]"
+                    },
+                    "eventhubResource" : {
+                        "value": "[variables('eventHubResource')]"
+                    },
+                    "ehVersion" : { 
+                        "value": "variables('ehVersion')]"
+                    },
+                    "sbAuthRuleResourceId" : {
+                        "value": "[variables('sbAuthRuleResourceId')]"
+                    },
+                    "sbVersion" : {
+                        "value": "[variables('sbVersion')]"
+                    },
+                    "githubClonePath" :{
+                        "value": "[variables('githubClonePath')]"
+                    }
                 }
-            }
-        }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Compute/deployments/', 'installvm')]",
+                "[resourceId('Microsoft.ContainerService/containerServices/', variables('kubernetesName'))]"
+            ]
+        }    
     ],
     "outputs": {
         "kubernetesMasterFQDN": {
@@ -515,6 +473,14 @@
         "agentFQDN": {
             "type": "string",
             "value": "[reference(concat('Microsoft.ContainerService/containerServices/', variables('kubernetesName'))).agentPoolProfiles[0].fqdn]"
+        },
+        "VirtualNetworkRef": {
+            "type": "string",
+            "value": "[reference(concat('Microsoft.Network/virtualNetworks/', variables('virtualNetworkName')))]"
+        },
+        "VnetID" : {
+            "type" : "string",
+            "value": "[variables('vnetID')]"
         }
     }
 }

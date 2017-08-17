@@ -248,10 +248,13 @@ sudo az storage container create --name vhds --account-key="${storage_account_ke
 
 sleep 10
 
+install_script_dir=./scripts
 install_git
-git clone "${gh_clone_path}"
+pwd
+echo Cloning "${gh_clone_path}" into $install_script_dir
+git clone "${gh_clone_path}" $install_script_dir
 
-cd -- *deploy*/ops/ || exit -2
+cd $install_script_dir/ops/ || exit -2
 
 readonly k8location="${location}"
 readonly k8cassandra_node_count="${cassandra_node_count}"

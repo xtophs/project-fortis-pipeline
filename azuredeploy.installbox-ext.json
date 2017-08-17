@@ -1,0 +1,89 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "vmName" : {
+            "type": "string"
+        },
+        "siteName" : {
+            "type": "string"
+        },
+        "adminUsername" : {
+            "type": "string"
+        },
+        "appInsightsKey": {
+          "type": "string"  
+        },    
+        "kubernetesName": {
+          "type": "string"  
+        },
+        "storageAccountName" : {
+            "type": "string"
+        },
+        "siteType" : {
+            "type": "string"
+        },
+        "sparkWorkers" : {
+            "type": "int"
+        },
+        "cassandraNodes" : {
+            "type": "int"
+        },
+        "servicePrincipalAppId": {
+            "metadata": {
+                "description": "Client ID (used by cloudprovider)"
+            },
+            "type": "securestring"
+        },
+        "servicePrincipalAppKey": {
+            "metadata": {
+                "description": "The Service Principal Client Secret."
+            },
+            "type": "securestring"
+        },
+        "dnsNamePrefix" : {
+            "type": "string"
+        },
+        "eventhubResource" : {
+            "type": "string"
+        },
+        "ehVersion" : { 
+          "type": "string"  
+        },
+        "sbAuthRuleResourceId" : {
+         "type": "string"   
+        },
+        "sbVersion" : {
+            "type": "string"
+        },
+        "githubClonePath" :{
+            "type": "string"
+        }                
+    },
+    "variables": {
+        "postDeploymentGithubRepoPath": "https://raw.githubusercontent.com/CatalystCode/fortisdeploy/master",
+        "postDeploymentExtensionScript": "fortis-deploy.sh"
+
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Compute/virtualMachines/extensions",
+            "name": "[concat(parameters('vmName'),'/deploysite')]",
+            "apiVersion": "2016-03-30",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "publisher": "Microsoft.Azure.Extensions",
+                "type": "CustomScript",
+                "typeHandlerVersion": "2.0",
+                "autoUpgradeMinorVersion": true,
+                "settings": {
+                    "fileUris": [
+                        "[concat(variables('postDeploymentGithubRepoPath'),'/', variables('postDeploymentExtensionScript'))]"
+                    ],
+                    "commandToExecute": "[concat('./', variables('postDeploymentExtensionScript'), ' -lo \"', resourceGroup().location, '\" -ak \"', parameters('servicePrincipalAppKey'), '\" -si \"', subscription().subscriptionId, '\" -ti \"', subscription().tenantId, '\" -sn \"', parameters('siteName'), '\" -un \"', parameters('adminUsername'), '\" -aii \"', parameters('appInsightsKey'),'\" -rg \"', resourceGroup().name, '\" -mf \"', reference(resourceId('Microsoft.ContainerService/containerServices', parameters('kubernetesName'))).masterProfile.fqdn, '\" -san \"', parameters('storageAccountName'), '\" -sak \"', listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2016-01-01').keys[0].value,'\" -sty \"', parameters('siteType'), '\" -ai \"', parameters('servicePrincipalAppId'), '\" -sw \"', parameters('sparkWorkers'), '\" -cn \"', parameters('cassandraNodes'), '\" -kn \"', parameters('kubernetesName'), '\" -pf \"', parameters('dnsNamePrefix'), '\" -ec \"', listKeys(parameters('eventhubResource'), parameters('ehVersion')).primaryConnectionString, '\" -sb \"', listkeys(parameters('sbAuthRuleResourceId'), parameters('sbVersion')).primaryConnectionString, '\" -gc \"', parameters('githubClonePath'), '\"')]"
+                }
+            }
+        }
+
+    ]
+}
