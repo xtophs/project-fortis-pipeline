@@ -64,7 +64,7 @@
         }                
     },
     "variables": {
-        "postDeploymentGithubRepoPath": "https://raw.githubusercontent.com/CatalystCode/fortisdeploy/master",
+        "postDeploymentGithubRepoPath": "https://raw.githubusercontent.com/xtophs/project-fortis-pipeline/multi-dc-deploy",
         "postDeploymentExtensionScript": "fortis-deploy.sh"
 
     },
