@@ -190,7 +190,7 @@
             "properties": {
                 "publicIPAllocationMethod": "[variables('publicIPAddressType')]",
                 "dnsSettings": {
-                    "domainNameLabel": "[parameters('siteName')]"
+                    "domainNameLabel": "[concat( substring(uniquestring(resourceGroup().id), 4), parameters('siteName'))]"
                 }
             }
         },
@@ -457,14 +457,14 @@
                 },
                 "masterProfile": {
                     "count": "[parameters('acsMasterCount')]",
-                    "dnsPrefix": "[parameters('dnsNamePrefix')]"
+                    "dnsPrefix": "[concat(substring(uniquestring(resourceGroup().id), 4), parameters('dnsNamePrefix'))]"
                 },
                 "agentPoolProfiles": [
                     {
                         "name": "agentpools",
                         "count": "[parameters('acsAgentCount')]",
                         "vmSize": "[parameters('agentVMSize')]",
-                        "dnsPrefix": "[concat(parameters('dnsNamePrefix'),'agents')]"
+                        "dnsPrefix": "[concat(substring(uniquestring(resourceGroup().id), 4), parameters('dnsNamePrefix'),'agents')]"
                     }
                 ],
                 "linuxProfile": {
