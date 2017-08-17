@@ -330,7 +330,7 @@
             "properties": {
                 "mode": "incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/xtoph/project-fortis-pipeline/multi-dc-deploy/azuredeploy.installbox.json",
+                    "uri": "https://raw.githubusercontent.com/xtophs/project-fortis-pipeline/multi-dc-deploy/azuredeploy.installbox.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
@@ -398,7 +398,7 @@
             "properties": {
                 "mode": "incremental",
                 "templateLink": {
-                    "uri": "https://raw.githubusercontent.com/xtoph/project-fortis-pipeline/multi-dc-deploy/azuredeploy.installbox-ext.json",
+                    "uri": "https://raw.githubusercontent.com/xtophs/project-fortis-pipeline/multi-dc-deploy/azuredeploy.installbox-ext.json",
                     "contentVersion": "1.0.0.0"
                 },
                 "parameters": {
