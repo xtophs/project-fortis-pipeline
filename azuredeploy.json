@@ -348,6 +348,9 @@
                     },
                     "subnetRef": {
                         "value": "[variables('subnetref')]"
+                    },
+                    "sshPublicKey": {
+                        "value": "[variables('sshPublicKey')]"
                     }
                 }
             },
