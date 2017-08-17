@@ -420,6 +420,9 @@
                     "kubernetesEndpoint": {
                         "value": "[reference(resourceId('Microsoft.ContainerService/containerServices', variables('kubernetesName'))).masterProfile.fqdn]"  
                     },
+                    "kubernetesName" : {
+                        "value": "[variables('kubernetesName')]"
+                    },
                     "storageAccountName" : {
                         "value": "[variables('storageAccountName')]"
                     },
