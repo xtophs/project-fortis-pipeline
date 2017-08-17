@@ -133,7 +133,7 @@
         "subnetRef": "[concat(variables('vnetID'),'/subnets/',variables('subnetName'))]",
         "postDeploymentGithubRepoPath": "https://raw.githubusercontent.com/CatalystCode/fortisdeploy/master",
         "postDeploymentExtensionScript": "fortis-deploy.sh",
-        "githubClonePath": "https://github.com/CatalystCode/fortisdeploy.git",
+        "githubClonePath": "https://github.com/xtophs/project-fortis-pipeline.git",
         "sbNamespace": "[concat(substring(uniquestring(resourceGroup().id), 8), 'fortissbns')]",
         "sbQueueNameConfiguration": "configuration",
         "sbQueueNameCommand": "command",
