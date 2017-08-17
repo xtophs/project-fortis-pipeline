@@ -16,6 +16,7 @@ chmod -R 752 .
 sleep 10
 
 git clone https://github.com/xtophs/charts.git
+git checkout xtoph-fddeployment
 
 echo "Installing Cassandra chart"
 ./install-cassandra.sh "${k8cassandra_node_count}"
