@@ -456,7 +456,7 @@
                 }
             },
             "dependsOn": [
-                "[resourceId('Microsoft.Compute/deployments/', 'installVM')]",
+                "[resourceId('Microsoft.Resources/deployments/', 'installVM')]",
                 "[resourceId('Microsoft.ContainerService/containerServices/', variables('kubernetesName'))]"
             ]
         }    
