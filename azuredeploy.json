@@ -445,7 +445,7 @@
                         "value": "[variables('eventHubResource')]"
                     },
                     "ehVersion" : { 
-                        "value": "variables('ehVersion')]"
+                        "value": "[variables('ehVersion')]"
                     },
                     "sbAuthRuleResourceId" : {
                         "value": "[variables('sbAuthRuleResourceId')]"
