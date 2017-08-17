@@ -108,7 +108,7 @@
                 "mode": "incremental",
                 "templateLink": {
                     "uri": "https://raw.githubusercontent.com/xtophs/project-fortis-pipeline/multi-dc-deploy/azuredeploy.json",
-                    "contentVersion": "1.0.0.0"
+                    "contentVersion": "1.0.0.1"
                 },
                 "parameters": {
                     "siteName": {

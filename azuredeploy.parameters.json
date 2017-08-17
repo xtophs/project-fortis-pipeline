@@ -1,9 +1,9 @@
 {
     "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
+    "contentVersion": "1.0.0.1",
     "parameters": {
         "siteName": {
-            "value": "enter-your-fortis-site-name"
+            "value": "xtoph-fortis"
         },
         "acsMasterCount": {
             "value": 1
@@ -15,7 +15,7 @@
             "value": "Standard_DS2"
         },
         "dnsNamePrefix": {
-            "value": "fortis"
+            "value": "xtophfortis"
         },
         "adminUsername": {
             "value": "fortisadmin"
@@ -30,13 +30,13 @@
             "value": "humanitarian"
         },
         "sshPublicKey": {
-            "value": "GEN-UNIQUE"
+            "value": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCgF0Rk/Z9TN9+DX/38oHJ/Vc+8M+ZYgE4zidNP+eMS3ct+CaZnrroaS/vxLrQFeDTm63dqweQWsDxlWd03eFlu43A3MSyPi3SG1O0hNXbZBo3OTc6WbIPxe0hdA0J3NUCwwp/gWvsDmmENEKu8prbBQlrKeEua9nSpG6uWiNjaRQ5qGH5DDc3/cMQff1af4jc1bk6JhsXxUEfY+yElCSMqMAj+OGx9+T41xKO4mHMEdrhTinM+LRiaeJlR80XyHEilRMeq688XN8CG7aO0DWrwn+Iamuxb+Ng7oxAdf/ypmi6ZmdTTK+JWGNCtGbjLrFEllMXGxT4pprbrLJiO5lbj root@6b028c60fb38"
         },
         "servicePrincipalAppId": {
-            "value": "GEN-UNIQUE"
+            "value": "f502f08b-20f5-4279-b141-445a3fb03aae"
         },
         "servicePrincipalAppKey": {
-            "value": "GEN-UNIQUE"
+            "value": "52a24c61-ea4b-4124-943d-132b9f8fe0d7"
         }
     }
 }
