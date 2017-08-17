@@ -32,10 +32,10 @@
         "sshPublicKey": {
             "value": "GEN-UNIQUE"
         },
-        "servicePrincipalClientId": {
+        "servicePrincipalAppId": {
             "value": "GEN-UNIQUE"
         },
-        "servicePrincipalClientSecret": {
+        "servicePrincipalAppKey": {
             "value": "GEN-UNIQUE"
         }
     }
