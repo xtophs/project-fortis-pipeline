@@ -417,8 +417,8 @@
                     "appInsightsKey": {
                       "value": "[reference(resourceId('Microsoft.Insights/components', variables('applicationInsightServiceName')), '2014-04-01').InstrumentationKey]"  
                     },    
-                    "kubernetesName": {
-                        "value": "[variables('kubernetesName')]"  
+                    "kubernetesEndpoint": {
+                        "value": "[reference(resourceId('Microsoft.ContainerService/containerServices', variables('kubernetesName'))).masterProfile.fqdn]"  
                     },
                     "storageAccountName" : {
                         "value": "[variables('storageAccountName')]"

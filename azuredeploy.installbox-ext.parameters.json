@@ -14,7 +14,7 @@
         "appInsightsKey": {
           "value": ""  
         },    
-        "kubernetesName": {
+        "kubernetesEndpoint": {
             "value": ""  
         },
         "storageAccountName" : {

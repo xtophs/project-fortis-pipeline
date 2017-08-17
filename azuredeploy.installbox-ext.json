@@ -14,7 +14,7 @@
         "appInsightsKey": {
           "type": "string"  
         },    
-        "kubernetesName": {
+        "kubernetesEndpoint": {
           "type": "string"  
         },
         "storageAccountName" : {
@@ -80,7 +80,7 @@
                     "fileUris": [
                         "[concat(variables('postDeploymentGithubRepoPath'),'/', variables('postDeploymentExtensionScript'))]"
                     ],
-                    "commandToExecute": "[concat('./', variables('postDeploymentExtensionScript'), ' -lo \"', resourceGroup().location, '\" -ak \"', parameters('servicePrincipalAppKey'), '\" -si \"', subscription().subscriptionId, '\" -ti \"', subscription().tenantId, '\" -sn \"', parameters('siteName'), '\" -un \"', parameters('adminUsername'), '\" -aii \"', parameters('appInsightsKey'),'\" -rg \"', resourceGroup().name, '\" -mf \"', reference(resourceId('Microsoft.ContainerService/containerServices', parameters('kubernetesName'))).masterProfile.fqdn, '\" -san \"', parameters('storageAccountName'), '\" -sak \"', listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2016-01-01').keys[0].value,'\" -sty \"', parameters('siteType'), '\" -ai \"', parameters('servicePrincipalAppId'), '\" -sw \"', parameters('sparkWorkers'), '\" -cn \"', parameters('cassandraNodes'), '\" -kn \"', parameters('kubernetesName'), '\" -pf \"', parameters('dnsNamePrefix'), '\" -ec \"', listKeys(parameters('eventhubResource'), parameters('ehVersion')).primaryConnectionString, '\" -sb \"', listkeys(parameters('sbAuthRuleResourceId'), parameters('sbVersion')).primaryConnectionString, '\" -gc \"', parameters('githubClonePath'), '\"')]"
+                    "commandToExecute": "[concat('./', variables('postDeploymentExtensionScript'), ' -lo \"', resourceGroup().location, '\" -ak \"', parameters('servicePrincipalAppKey'), '\" -si \"', subscription().subscriptionId, '\" -ti \"', subscription().tenantId, '\" -sn \"', parameters('siteName'), '\" -un \"', parameters('adminUsername'), '\" -aii \"', parameters('appInsightsKey'),'\" -rg \"', resourceGroup().name, '\" -mf \"', parameters('kubernetesEndpoint'), '\" -san \"', parameters('storageAccountName'), '\" -sak \"', listKeys(resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName')), '2016-01-01').keys[0].value,'\" -sty \"', parameters('siteType'), '\" -ai \"', parameters('servicePrincipalAppId'), '\" -sw \"', parameters('sparkWorkers'), '\" -cn \"', parameters('cassandraNodes'), '\" -kn \"', parameters('kubernetesName'), '\" -pf \"', parameters('dnsNamePrefix'), '\" -ec \"', listKeys(parameters('eventhubResource'), parameters('ehVersion')).primaryConnectionString, '\" -sb \"', listkeys(parameters('sbAuthRuleResourceId'), parameters('sbVersion')).primaryConnectionString, '\" -gc \"', parameters('githubClonePath'), '\"')]"
                 }
             }
         }
