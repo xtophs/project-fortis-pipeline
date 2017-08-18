@@ -253,6 +253,8 @@ install_git
 pwd
 echo Cloning "${gh_clone_path}" into $install_script_dir
 git clone "${gh_clone_path}" $install_script_dir
+## Fix Later
+git checkout multi-dc-deploy
 
 cd $install_script_dir/ops/ || exit -2
 

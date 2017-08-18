@@ -15,6 +15,8 @@ chmod -R 752 .
 ./create-disk.sh "${k8location}" "${storage_account_name}"
 sleep 10
 
+## BAD BAD BAD
+## Hard-coded URL
 git clone https://github.com/xtophs/charts.git
 git checkout xtoph-fddeployment
 
